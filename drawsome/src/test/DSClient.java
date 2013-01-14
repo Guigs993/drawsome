@@ -4,23 +4,28 @@ import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class DSClient extends JFrame
+public class DSClient extends JFrame implements ActionListener
 {
 	private Socket clientSocket;
 	private JFrame fenetre;
 	  
 	private JTextField message_field;
 	private JTextArea chat_area;
+	private JButton bouton_env;
 
 	public DSClient ()
 	{
@@ -29,6 +34,7 @@ public class DSClient extends JFrame
 		try
 		{
 			clientSocket = new Socket("localhost", 6112);
+				
 			
 			// TODO changer le contenu du programme client
 			fenetre = new JFrame();
@@ -39,6 +45,8 @@ public class DSClient extends JFrame
 			PersoWindowListener listener = new PersoWindowListener(this);
 			fenetre.addWindowListener(listener);
 			
+			
+			// Message field
 			message_field = new JTextField();
 			message_field.setPreferredSize(new Dimension(300, 300));
 			message_field.addActionListener(new ActionListener()
@@ -66,11 +74,23 @@ public class DSClient extends JFrame
 				}
 			});
 			
+			
+			// Chat area
 			chat_area = new JTextArea();
 			chat_area.setPreferredSize(new Dimension(300, 300));
+			
+			
+			// Bouton envoyer
+			bouton_env = new JButton("Envoyer");
+			bouton_env.setPreferredSize(new Dimension(200, 100));
+			bouton_env.addActionListener(this);
+			
 
+			
+			// On ajoute tout dans le JFrame fenetre
 			fenetre.add(message_field);
 			fenetre.add(chat_area);
+			fenetre.add(bouton_env);
 			
 			fenetre.pack();
 		}
@@ -113,6 +133,31 @@ public class DSClient extends JFrame
 		DSClient client = new DSClient();
 		
 		new ServeurThread(client.getSocket(), client);
+	}
+	
+	
+
+	// Même action qu'appuyer sur le bouton entrée. comment réutiliser la méthode déja écrite plutot que de la recopier??
+	public void actionPerformed(ActionEvent e) 
+	{
+		try
+		{
+			String message = message_field.getText();
+
+			if (!message.equals(""))
+			{
+				OutputStreamWriter  out = new OutputStreamWriter (clientSocket.getOutputStream());
+				out.write(message + "\n");
+				out.flush();
+
+				message_field.setText("");
+			}
+
+		}
+		catch (IOException ioe)
+		{
+			ioe.printStackTrace();
+		}
 	}
 
 }
