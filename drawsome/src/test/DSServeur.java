@@ -1,13 +1,36 @@
 package test;
 
+import java.io.DataOutputStream;
 import java.net.ServerSocket;
 import java.util.Vector;
 
 public class DSServeur
 {
 	// TODO variables obseletes pour le moment
-	Vector tab_Clients = new Vector();
-	int nb_Clients = 0;
+	private Vector tabClients = new Vector();
+	private int numNextClient = -1;
+	
+	synchronized public int addClient(DataOutputStream out)
+	{
+		numNextClient++;
+		
+		tabClients.addElement(out);
+		
+		return numNextClient;
+	}
+
+	synchronized public void removeClient(int i)
+	{
+		if (tabClients.elementAt(i) != null) 
+		{
+			tabClients.removeElementAt(i);
+		}
+	}
+	
+	public int getLastIndex()
+	{
+		return tabClients.size()-1;
+	}
 	
 	public static void main (String[] args)
 	{
