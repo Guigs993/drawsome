@@ -1,9 +1,9 @@
 package test;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 public class ClientThread implements Runnable
@@ -11,7 +11,7 @@ public class ClientThread implements Runnable
 	private Thread t;
 	private Socket s;
 	
-	private DataOutputStream out; // inutilisée pour le moment
+	private OutputStreamWriter out; // inutilisée pour le moment
 	private BufferedReader in;
 	
 	private int numClient;
@@ -27,7 +27,7 @@ public class ClientThread implements Runnable
 		try
 		{
 			in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-			// out = new DataOutputStream(s.getOutputStream()); 
+			out = new OutputStreamWriter(s.getOutputStream()); 
 			
 			numClient = serveur.addClient(out);
 			indexClient = serveur.getLastIndex();
@@ -51,7 +51,15 @@ public class ClientThread implements Runnable
 	    try {
 			while((message=in.readLine()) != null)
 			{
-				System.out.println("client n°" + numClient  + " : " + message);
+				System.out.println("--------------------------------------------");
+				System.out.println("[#1] proposition reçu d'un joueur" + "\n\t" + "client n°" + numClient  + " : " + message);
+				
+				System.out.println("[#2] Déterminer si le mot correspond a la reponse (a faire)");
+				//A FAIRE
+				
+				System.out.println("[#3] Envoi du message a tout le monde si la reponse est fausse");
+				serveur.sendAll(message);
+				System.out.println("--------------------------------------------");
 			}
 	    }
 	    catch (Exception e)
@@ -60,6 +68,6 @@ public class ClientThread implements Runnable
 		}
 	    
 		System.out.println("client n°" + numClient + " : Connexion interrompue");
-		serveur.removeClient(indexClient);
+		serveur.removeClient(out);
 	}
 }
