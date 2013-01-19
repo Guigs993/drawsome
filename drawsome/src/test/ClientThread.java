@@ -7,11 +7,11 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 public class ClientThread implements Runnable
-{
+{	
 	private Thread t;
 	private Socket s;
 	
-	private OutputStreamWriter out; // inutilisée pour le moment
+	private OutputStreamWriter out;
 	private BufferedReader in;
 	
 	private int numClient;
@@ -39,7 +39,6 @@ public class ClientThread implements Runnable
 		{
 			System.out.println("Erreur creation flux client");
 		}
-
 	}
 
 	public void run()
@@ -51,15 +50,14 @@ public class ClientThread implements Runnable
 	    try {
 			while((message=in.readLine()) != null)
 			{
-				System.out.println("--------------------------------------------");
-				System.out.println("[#1] proposition reçu d'un joueur" + "\n\t" + "client n°" + numClient  + " : " + message);
+				//[#1] proposition reçu d'un joueur
+				//System.out.println("client n°" + numClient  + " : " + message);
 				
-				System.out.println("[#2] Déterminer si le mot correspond a la reponse (a faire)");
+				//[#2] Déterminer si le mot correspond a la reponse (a faire)
 				//A FAIRE
 				
-				System.out.println("[#3] Envoi du message a tout le monde si la reponse est fausse");
+				//[#3] Envoi du message a tout le monde si la reponse est fausse
 				serveur.sendAll(message);
-				System.out.println("--------------------------------------------");
 			}
 	    }
 	    catch (Exception e)

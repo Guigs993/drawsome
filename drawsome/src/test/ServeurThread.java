@@ -1,5 +1,6 @@
 package test;
 
+import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -43,12 +44,32 @@ public class ServeurThread implements Runnable
 	    try {
 			while((message=in.readLine()) != null)
 			{
-				client.addMessage(message);
+				decodeMessage(message);
+				//client.addMessage(message);
 			}
 	    }
 	    catch (Exception e)
 		{
 	    	//
+		}
+	}
+	
+	public void decodeMessage(String m)
+	{
+		String[] split = m.split(";");
+		int type = Integer.parseInt(split[0]);
+		String message = split[1];
+		
+		switch (type) 
+		{
+			case 1 :
+				client.addMessage(message);
+				break;
+			case 2 :
+				split = message.split(":");
+				Point p = new Point(Integer.parseInt(split[0]),Integer.parseInt(split[1]));
+				client.getDessinPanel().dessineEtEnvoi(p, false);
+				break;
 		}
 	}
 
