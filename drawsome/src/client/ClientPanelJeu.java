@@ -44,7 +44,7 @@ public class ClientPanelJeu extends JPanel
 	///////////////////
 	public void initComponent ()
 	{
-		draw_area = new ClientPanelDessin();
+		draw_area = new ClientPanelDessin(prgm_client);
 		draw_area.setBounds(5, 5, 790, 390);
 		add(draw_area);
 		
@@ -88,6 +88,7 @@ public class ClientPanelJeu extends JPanel
 		add(message_field);
 	}
 	
+	// on ajoute un message au jtextarea
 	public void addProposition (String proposition)
 	{
 		String chat;
@@ -100,5 +101,13 @@ public class ClientPanelJeu extends JPanel
 		chat_area.setText(chat);
 		chat_area.setCaretPosition(chat_area.getDocument().getLength());
 	
+	}
+
+	////////////
+	// Getter //
+	////////////
+	public ClientPanelDessin getClientPanelDessin ()
+	{
+		return draw_area;
 	}
 }

@@ -2,9 +2,9 @@ package client;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.Socket;
 
+// Classe client
 public class Client implements Comparable<Client>
 {
 	private String nickname;
@@ -71,6 +71,7 @@ public class Client implements Comparable<Client>
 		this.nickname = nickname;
 	}
 
+	// Methode inutilisée mais qui sert a trier les clients par ordre decroissant en fonction des points
 	public int compareTo(Client client)
 	{
 		if (this.getPoints() > client.getPoints())

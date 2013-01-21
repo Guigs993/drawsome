@@ -7,6 +7,7 @@ import java.net.SocketException;
 
 import core.Message;
 
+//"Thread" qui s'occupera de la connexion le serveur et donc l'écoute des messages recus
 public class ClientReceiver implements Runnable
 {
 	private ClientMain prgmClient;

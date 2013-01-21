@@ -2,9 +2,13 @@ package core;
 
 import java.io.Serializable;
 
+// Classe message
 public class Message implements Serializable
 {	
+	// type de message
 	private int type;
+	
+	// contenu du message
 	private Serializable content;
 
 	//////////////////

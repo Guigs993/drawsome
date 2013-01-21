@@ -9,6 +9,7 @@ import client.Client;
 
 import core.Message;
 
+// "Thread" qui s'occupera de la connexion avec chaque client
 public class ServerReceiver implements Runnable
 {
 	private ServerMain server;
@@ -16,6 +17,7 @@ public class ServerReceiver implements Runnable
 	private Thread thread;
 	private Socket socket;
 	
+	// l'index du client dans le tableau de clients du serveur
 	private int indexClient;
 	
 	//////////////////
@@ -35,15 +37,18 @@ public class ServerReceiver implements Runnable
 	//////////////////
 	public void run ()
 	{
+		// on creer un client qu'on a joute a la liste de client
 		Client client = new Client(socket);
 		server.addClient(client);
-
+		
+		// on recupere son index
 		refreshIndex();
 		
 		try
 		{
 			ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
-
+			
+			// on recupere les message
 			while (true)
 			{
 				Message message = (Message) input.readObject();
@@ -63,10 +68,10 @@ public class ServerReceiver implements Runnable
 			cnfe.printStackTrace();
 		}
 		
+		// on sort de la boucle while true au moment ou on perd la connexion du socket, on supprime
+		// donc le client en question
 		server.removePlayer(server.getClient(indexClient).getNickname());
 		server.removeClient(indexClient);
-		
-		System.out.println("NB joueurs : " + server.getNbPlayers());
 	}
 	
 	//////////////
@@ -77,6 +82,9 @@ public class ServerReceiver implements Runnable
 		indexClient = server.searchClient(socket);
 	}
 	
+	////////////
+	// Getter //
+	////////////
 	public int getIndexClient ()
 	{
 		return indexClient;
